@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["'Space Grotesk'", "sans-serif"],
+        mono: ["'JetBrains Mono'", "monospace"],
+        sans: ["'Inter'", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -50,6 +51,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        pcb: {
+          trace: "#1a3a2a",
+          glow: "#00d4ff",
+          green: "#00ff88",
+          bg: "#080c10",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -75,15 +82,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-up": {
-          from: { opacity: "0", transform: "translateY(30px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-up": "fade-up 0.6s ease-out forwards",
       },
     },
   },

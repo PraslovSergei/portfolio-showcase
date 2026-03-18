@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,46 +6,40 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
-    --foreground: 220 20% 12%;
+    --background: 210 33% 4%;
+    --foreground: 190 100% 95%;
 
-    --card: 40 20% 95%;
-    --card-foreground: 220 20% 12%;
+    --card: 210 25% 8%;
+    --card-foreground: 190 100% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 12%;
+    --popover: 210 25% 6%;
+    --popover-foreground: 190 100% 95%;
 
-    --primary: 38 92% 50%;
-    --primary-foreground: 220 20% 12%;
+    --primary: 187 100% 50%;
+    --primary-foreground: 210 33% 4%;
 
-    --secondary: 40 15% 92%;
-    --secondary-foreground: 220 20% 12%;
+    --secondary: 155 100% 50%;
+    --secondary-foreground: 210 33% 4%;
 
-    --muted: 40 10% 90%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 210 15% 15%;
+    --muted-foreground: 190 30% 50%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 220 20% 12%;
+    --accent: 187 100% 50%;
+    --accent-foreground: 210 33% 4%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 40 15% 88%;
-    --input: 40 15% 88%;
-    --ring: 38 92% 50%;
+    --border: 170 30% 15%;
+    --input: 170 30% 15%;
+    --ring: 187 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.25rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    --font-display: 'Space Grotesk', sans-serif;
+    --pcb-trace: #1a3a2a;
+    --pcb-glow: #00d4ff;
+    --pcb-green: #00ff88;
+    --pcb-bg: #080c10;
   }
 }
 
@@ -55,29 +49,102 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Space Grotesk', sans-serif;
+    background: var(--pcb-bg);
+    color: hsl(var(--foreground));
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 }
 
-@layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(38 92% 50%), hsl(28 90% 55%));
-  }
+/* PCB Grid Background */
+.pcb-grid {
+  background-image:
+    linear-gradient(rgba(26, 58, 42, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 58, 42, 0.15) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
 
-  .border-gradient {
-    border-image: linear-gradient(135deg, hsl(38 92% 50%), hsl(28 90% 55%)) 1;
-  }
+/* Blinking cursor */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
 
-  .hover-lift {
-    @apply transition-all duration-300;
-  }
+/* LED pulse */
+@keyframes led-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; }
+  50% { opacity: 0.4; box-shadow: 0 0 2px currentColor; }
+}
+.led-pulse {
+  animation: led-pulse 2s ease-in-out infinite;
+}
 
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px -12px hsl(38 92% 50% / 0.15);
-  }
+@keyframes led-pulse-slow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
+}
+.led-pulse-slow {
+  animation: led-pulse-slow 3s ease-in-out infinite;
+}
+
+/* Running dot along trace */
+@keyframes trace-dot {
+  0% { offset-distance: 0%; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.trace-dot {
+  offset-path: var(--trace-path);
+  animation: trace-dot var(--duration, 3s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Chip glow */
+@keyframes chip-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 212, 255, 0.05); }
+  50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.25), inset 0 0 30px rgba(0, 212, 255, 0.1); }
+}
+.chip-glow {
+  animation: chip-glow 4s ease-in-out infinite;
+}
+
+/* Card hover trace highlight */
+.project-card {
+  transition: all 0.3s ease;
+}
+.project-card:hover {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+}
+
+/* In-development card */
+.card-wip {
+  filter: blur(0.5px);
+  opacity: 0.6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--pcb-bg); }
+::-webkit-scrollbar-thumb { background: var(--pcb-trace); border-radius: 2px; }
+
+/* Status bar */
+.status-bar {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+@keyframes float-dot {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+.float-dot {
+  animation: float-dot 2s ease-in-out infinite;
 }
